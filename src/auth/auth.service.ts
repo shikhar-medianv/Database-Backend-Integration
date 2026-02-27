@@ -14,7 +14,7 @@ export class AuthService {
         if (user?.password != pass) {
             throw new UnauthorizedException()
         }
-        const payload = { sub: user.userId, username: user.username }
+        const payload = { sub: user.userId, username: user.username, roles: user.roles }
         return {
             // 💡 Here the JWT secret key that's used for signing the payload 
             // is the key that was passsed in the JwtModule

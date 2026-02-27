@@ -1,7 +1,10 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './guard/auth.guard';
 import { Public } from '../decorators/public.decorator';
+import { RolesGuard } from './guard/roles.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/enums/role.enum';
 
 @Controller('auth')
 export class AuthController {
@@ -14,9 +17,15 @@ export class AuthController {
         return this.authService.signIn(signInDto.username, signInDto.password)
     }
 
-    @UseGuards(AuthGuard)
+    // @UseGuards(AuthGuard)
     @Get('profile')
     getProfile(@Request() req) {
         return req.user;
+    }
+
+    @Post('/create')
+    @Roles(Role.Admin)
+    createProfile() {
+        return { message: "'Admin created profile successfully" }
     }
 }
